@@ -123,16 +123,6 @@ export const Header: React.FC<NavigationProps> = ({
             Calculadora
           </button>
           <button
-            onClick={() => onSelectTab('marmitas')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap ${
-              activeTab === 'marmitas'
-                ? 'bg-[#18121F] text-[#F8F5FC] border border-[#8B5CF6]/50 text-[#A78BFA]'
-                : 'text-[#B8AFC4] hover:text-[#F8F5FC] hover:bg-[#18121F]/60'
-            }`}
-          >
-            Marmitas
-          </button>
-          <button
             onClick={() => onSelectTab('receitas')}
             className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap ${
               activeTab === 'receitas'
@@ -228,7 +218,7 @@ export const MobileTabBar: React.FC<NavigationProps> = ({
 }) => {
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#100C16]/95 backdrop-blur-md border-t border-[#33263F] px-2 py-1.5 pb-safe shadow-2xl">
-      <div className="grid grid-cols-5 items-center justify-around max-w-md mx-auto">
+      <div className="grid grid-cols-4 items-center justify-around max-w-md mx-auto">
         <button
           onClick={() => onSelectTab('meu-dia')}
           className={`flex flex-col items-center justify-center py-1 transition-colors min-h-[44px] cursor-pointer ${
@@ -259,16 +249,6 @@ export const MobileTabBar: React.FC<NavigationProps> = ({
             <Camera className="w-5 h-5 text-white" />
           </button>
         </div>
-
-        <button
-          onClick={() => onSelectTab('marmitas')}
-          className={`flex flex-col items-center justify-center py-1 transition-colors min-h-[44px] cursor-pointer ${
-            activeTab === 'marmitas' ? 'text-[#A78BFA]' : 'text-[#B8AFC4] hover:text-[#F8F5FC]'
-          }`}
-        >
-          <Utensils className="w-5 h-5" />
-          <span className="text-[10px] font-medium tracking-tight mt-0.5">Marmitas</span>
-        </button>
 
         <button
           onClick={() => onSelectTab('perfil')}
