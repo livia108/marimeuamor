@@ -212,28 +212,28 @@ export const CalculadoraNutricional: React.FC<CalculadoraNutricionalProps> = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-2 font-mono-numbers text-center">
-                <div className="p-2.5 rounded-xl bg-[#100C16] border border-[#33263F]">
-                  <span className="text-[10px] text-[#B8AFC4] block">Proteína</span>
-                  <span className="text-sm font-bold text-[#8B5CF6]">
+              <div className="grid grid-cols-4 gap-1.5 sm:gap-2 font-mono-numbers text-center">
+                <div className="p-2 sm:p-2.5 rounded-xl bg-[#100C16] border border-[#33263F]">
+                  <span className="text-[9px] sm:text-[10px] text-[#B8AFC4] block truncate">Proteína</span>
+                  <span className="text-xs sm:text-sm font-bold text-[#8B5CF6]">
                     {calculated.protein}g
                   </span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-[#100C16] border border-[#33263F]">
-                  <span className="text-[10px] text-[#B8AFC4] block">Carboidrato</span>
-                  <span className="text-sm font-bold text-[#EC4899]">
+                <div className="p-2 sm:p-2.5 rounded-xl bg-[#100C16] border border-[#33263F]">
+                  <span className="text-[9px] sm:text-[10px] text-[#B8AFC4] block truncate">Carboidrato</span>
+                  <span className="text-xs sm:text-sm font-bold text-[#EC4899]">
                     {calculated.carbs}g
                   </span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-[#100C16] border border-[#33263F]">
-                  <span className="text-[10px] text-[#B8AFC4] block">Gorduras</span>
-                  <span className="text-sm font-bold text-[#F472B6]">
+                <div className="p-2 sm:p-2.5 rounded-xl bg-[#100C16] border border-[#33263F]">
+                  <span className="text-[9px] sm:text-[10px] text-[#B8AFC4] block truncate">Gorduras</span>
+                  <span className="text-xs sm:text-sm font-bold text-[#F472B6]">
                     {calculated.fat}g
                   </span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-[#100C16] border border-[#33263F]">
-                  <span className="text-[10px] text-[#B8AFC4] block">Fibras</span>
-                  <span className="text-sm font-bold text-[#38BDF8]">
+                <div className="p-2 sm:p-2.5 rounded-xl bg-[#100C16] border border-[#33263F]">
+                  <span className="text-[9px] sm:text-[10px] text-[#B8AFC4] block truncate">Fibras</span>
+                  <span className="text-xs sm:text-sm font-bold text-[#38BDF8]">
                     {calculated.fiber}g
                   </span>
                 </div>
@@ -245,18 +245,19 @@ export const CalculadoraNutricional: React.FC<CalculadoraNutricionalProps> = ({
               <label className="text-xs text-[#B8AFC4] block">
                 Salvar em qual refeição de hoje?
               </label>
-              <div className="grid grid-cols-5 gap-1">
+              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-5 gap-1.5">
                 {slots.map((slot) => (
                   <button
                     key={slot.id}
                     onClick={() => setMealType(slot.id)}
-                    className={`py-1.5 text-center rounded-lg text-[11px] font-semibold transition-colors ${
+                    className={`py-2 px-1.5 text-center rounded-xl text-xs font-medium transition-all flex items-center justify-center gap-1.5 ${
                       mealType === slot.id
-                        ? 'bg-[#8B5CF6] text-white'
+                        ? 'bg-[#8B5CF6] text-white shadow-md shadow-[#8B5CF6]/30 font-semibold'
                         : 'bg-[#100C16] text-[#B8AFC4] border border-[#33263F] hover:text-[#F8F5FC]'
                     }`}
                   >
-                    {slot.icon} {slot.label}
+                    <span className="shrink-0">{slot.icon}</span>
+                    <span className="truncate">{slot.label}</span>
                   </button>
                 ))}
               </div>

@@ -18,11 +18,16 @@
     color-scheme: dark;
   }
 
-  body {
+  html, body {
     background-color: #09070D;
     color: #F8F5FC;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1, h2, h3, h4, .font-heading {
@@ -35,10 +40,23 @@
   }
 }
 
+/* Safe area utilities for modern mobile screens */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+}
+
+.pt-safe {
+  padding-top: max(0.5rem, env(safe-area-inset-top, 0.5rem));
+}
+
+.mb-safe {
+  margin-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+}
+
 /* Custom scrollbars for dark mode */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: #100C16;
@@ -51,8 +69,7 @@
   background: #6D28D9;
 }
 
-/* Row do menu desktop: rolável horizontalmente apenas se não couber,
-   sem exibir scrollbar (o conteúdo normalmente cabe num container max-w-4xl) */
+/* Hide scrollbar when scrolling horizontally */
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;

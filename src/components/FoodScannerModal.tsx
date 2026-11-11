@@ -298,7 +298,7 @@ export const FoodScannerModal: React.FC<FoodScannerModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="relative w-full max-w-2xl bg-[#18121F] border-t sm:border border-[#33263F] rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto overflow-x-hidden">
+      <div className="relative w-full max-w-2xl bg-[#18121F] border-t sm:border border-[#33263F] rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 pb-safe shadow-2xl max-h-[92vh] overflow-y-auto overflow-x-hidden">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-[#33263F]">
           <div className="flex items-center gap-2.5">
@@ -331,19 +331,20 @@ export const FoodScannerModal: React.FC<FoodScannerModalProps> = ({
                 <label className="text-xs font-medium text-[#B8AFC4] block mb-1.5">
                   Qual refeição você está fotografando?
                 </label>
-                <div className="grid grid-cols-5 gap-1.5">
+                <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-5 gap-1.5">
                   {slots.map((slot) => (
                     <button
                       key={slot.id}
                       type="button"
                       onClick={() => setMealType(slot.id)}
-                      className={`py-2 px-1 text-center rounded-xl text-xs font-medium transition-all ${
+                      className={`py-2 px-1 text-center rounded-xl text-xs font-medium transition-all flex items-center justify-center gap-1.5 ${
                         mealType === slot.id
-                          ? 'bg-[#8B5CF6] text-white shadow-md shadow-[#8B5CF6]/30'
+                          ? 'bg-[#8B5CF6] text-white shadow-md shadow-[#8B5CF6]/30 font-semibold'
                           : 'bg-[#100C16] text-[#B8AFC4] border border-[#33263F] hover:text-[#F8F5FC]'
                       }`}
                     >
-                      {slot.icon} {slot.label}
+                      <span className="shrink-0">{slot.icon}</span>
+                      <span className="truncate">{slot.label}</span>
                     </button>
                   ))}
                 </div>

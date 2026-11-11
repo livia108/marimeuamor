@@ -178,23 +178,23 @@ export const MinhasMarmitas: React.FC<MinhasMarmitasProps> = ({
   return (
     <div className="space-y-6 pb-20 lg:pb-12">
       {/* Header Banner */}
-      <div className="rounded-3xl bg-gradient-to-br from-[#18121F] via-[#100C16] to-[#09070D] border border-[#33263F] p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="rounded-3xl bg-gradient-to-br from-[#18121F] via-[#100C16] to-[#09070D] border border-[#33263F] p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-[#8B5CF6] uppercase tracking-wider mb-1">
             <Utensils className="w-4 h-4" />
             <span>Meal Prep & Marmitas</span>
           </div>
-          <h1 className="font-heading text-2xl lg:text-3xl font-bold text-[#F8F5FC]">
+          <h1 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold text-[#F8F5FC]">
             Minhas Marmitas 💜
           </h1>
-          <p className="text-sm text-[#B8AFC4] mt-1 max-w-xl">
+          <p className="text-xs sm:text-sm text-[#B8AFC4] mt-1 max-w-xl">
             Organize suas marmitas com ingredientes pesados individualmente e soma matemática automática de calorias e macros.
           </p>
         </div>
 
         <button
           onClick={openNewMarmitaModal}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#6D28D9] to-[#8B5CF6] hover:from-[#7C3AED] hover:to-[#A78BFA] text-white text-xs font-bold shadow-lg shadow-[#8B5CF6]/30 transition-all cursor-pointer shrink-0"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#6D28D9] to-[#8B5CF6] hover:from-[#7C3AED] hover:to-[#A78BFA] text-white text-xs font-bold shadow-lg shadow-[#8B5CF6]/30 transition-all cursor-pointer shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Criar Nova Marmita</span>
@@ -344,8 +344,8 @@ export const MinhasMarmitas: React.FC<MinhasMarmitasProps> = ({
 
       {/* CREATE / EDIT MARMITA MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-          <div className="relative w-full max-w-2xl bg-[#18121F] border border-[#33263F] rounded-3xl p-6 shadow-2xl my-8 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+          <div className="relative w-full max-w-2xl bg-[#18121F] border-t sm:border border-[#33263F] rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 pb-safe shadow-2xl my-0 sm:my-8 space-y-4 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-[#33263F]">
               <h2 className="text-base font-bold text-[#F8F5FC]">
                 {editingMarmita ? 'Editar Marmita' : 'Nova Marmita Planejada 💜'}
@@ -529,8 +529,8 @@ export const MinhasMarmitas: React.FC<MinhasMarmitasProps> = ({
 
       {/* CONSUME TODAY MODAL */}
       {consumeModalMarmita && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="w-full max-w-md bg-[#18121F] border border-[#33263F] rounded-3xl p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/85 backdrop-blur-md">
+          <div className="w-full max-w-md bg-[#18121F] border-t sm:border border-[#33263F] rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 pb-safe shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
             <h3 className="text-base font-bold text-[#F8F5FC]">
               Consumir Marmita no Meu Dia 💜
             </h3>

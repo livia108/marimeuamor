@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { AppState, MealLog, FoodItem, Recipe, WeeklyPlan, UserProfile, MealType } from './types';
+import { AppState, MealLog, FoodItem, Recipe, WeeklyPlan, UserProfile, MealType, Marmita, DayOfWeek } from './types';
 import { StorageService, INITIAL_USER_PROFILE } from './services/storage';
-import { Header, MobileTabBar, TabId } from './components/Navigation';
+import { Header, MobileTabBar, MobileMenuDrawer, TabId } from './components/Navigation';
 import { MeuDia } from './components/MeuDia';
 import { FoodScannerModal } from './components/FoodScannerModal';
 import { BarcodeScannerModal } from './components/BarcodeScannerModal';
 import { SemBalanca } from './components/SemBalanca';
 import { CalculadoraNutricional } from './components/CalculadoraNutricional';
+import { MinhasMarmitas } from './components/MinhasMarmitas';
 import { LivroReceitas } from './components/LivroReceitas';
 import { PlanejamentoSemanal } from './components/PlanejamentoSemanal';
 import { HistoricoNutricional } from './components/HistoricoNutricional';
@@ -19,6 +20,7 @@ export default function App() {
   const [isRegistrarGramasOpen, setIsRegistrarGramasOpen] = useState(false);
   const [isPhotoScannerOpen, setIsPhotoScannerOpen] = useState(false);
   const [isBarcodeScannerOpen, setIsBarcodeScannerOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedMealTypeForAction, setSelectedMealTypeForAction] = useState<MealType>('almoco');
 
   // Modo usuário único (só a Mari): carrega o estado direto, sem tela de login.
@@ -189,6 +191,84 @@ export default function App() {
     }));
   };
 
+  // Marmita management
+  const handleSaveMarmita = (marmita: Marmita) => {
+    updateStateAndPersist((prev) => {
+      const exists = prev.marmitas.some((m) => m.id === marmita.id);
+      return {
+        ...prev,
+        marmitas: exists
+          ? prev.marmitas.map((m) => (m.id === marmita.id ? marmita : m))
+          : [marmita, ...prev.marmitas],
+      };
+    });
+  };
+
+  const handleDeleteMarmita = (id: string) => {
+    updateStateAndPersist((prev) => ({
+      ...prev,
+      marmitas: prev.marmitas.filter((m) => m.id !== id),
+    }));
+  };
+
+  const handleLogMarmitaToMeal = (marmita: Marmita, targetType: MealType) => {
+    const today = new Date().toISOString().split('T')[0];
+    const foodItems: FoodItem[] = marmita.items.map((it, idx) => ({
+      id: `marmita-food-${marmita.id}-${idx}-${Date.now()}`,
+      name: it.foodName,
+      prepState: it.prepState || 'cozido',
+      portionGrams: it.weightGrams,
+      calories: it.calories,
+      protein: it.protein,
+      carbs: it.carbs,
+      fat: it.fat,
+      fiber: 0,
+      source: 'TACO',
+      verified: true,
+    }));
+
+    const newLog: MealLog = {
+      id: `meal-marmita-${Date.now()}`,
+      date: today,
+      mealType: targetType,
+      title: marmita.name,
+      foods: foodItems,
+      totalCalories: marmita.totalCalories,
+      totalProtein: marmita.totalProtein,
+      totalCarbs: marmita.totalCarbs,
+      totalFat: marmita.totalFat,
+      totalFiber: 0,
+      photoUrl: marmita.photoUrl,
+      createdAt: new Date().toISOString(),
+    };
+
+    updateStateAndPersist((prev) => ({
+      ...prev,
+      todayLogs: [newLog, ...prev.todayLogs],
+    }));
+  };
+
+  const handleAddMarmitaToWeeklyPlan = (marmita: Marmita, day: string, targetType: MealType) => {
+    const planItem = {
+      id: `plan-marmita-${Date.now()}`,
+      mealType: targetType,
+      title: marmita.name,
+      marmitaId: marmita.id,
+      calories: marmita.totalCalories,
+      protein: marmita.totalProtein,
+      carbs: marmita.totalCarbs,
+      fat: marmita.totalFat,
+    };
+
+    updateStateAndPersist((prev) => ({
+      ...prev,
+      weeklyPlan: {
+        ...prev.weeklyPlan,
+        [day as DayOfWeek]: [...(prev.weeklyPlan[day as DayOfWeek] || []), planItem],
+      },
+    }));
+  };
+
   // Delete a specific food item from a meal
   const handleDeleteFoodItem = (mealId: string, foodId: string) => {
     updateStateAndPersist((prev) => {
@@ -318,10 +398,11 @@ export default function App() {
           setSelectedMealTypeForAction('almoco');
           setIsRegistrarGramasOpen(true);
         }}
+        onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
       />
 
       {/* Main Content Area - Centered max-w-4xl for elegant, balanced responsiveness */}
-      <main className="flex-1 max-w-4xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6">
+      <main className="flex-1 max-w-4xl w-full mx-auto px-3 sm:px-6 py-3 sm:py-6 pb-28 lg:pb-8">
         {activeTab === 'meu-dia' && (
           <MeuDia
             appState={appState}
@@ -403,6 +484,18 @@ export default function App() {
             mealSlots={appState.mealSlots}
           />
         )}
+
+        {activeTab === 'marmitas' && (
+          <MinhasMarmitas
+            marmitas={appState.marmitas}
+            mealSlots={appState.mealSlots}
+            onSaveMarmita={handleSaveMarmita}
+            onDeleteMarmita={handleDeleteMarmita}
+            onLogMarmitaToMeal={handleLogMarmitaToMeal}
+            onAddToWeeklyPlan={handleAddMarmitaToWeeklyPlan}
+          />
+        )}
+
         {activeTab === 'receitas' && (
           <LivroReceitas
             recipes={appState.recipes}
@@ -452,6 +545,24 @@ export default function App() {
           setSelectedMealTypeForAction('almoco');
           setIsPhotoScannerOpen(true);
         }}
+        onOpenMenu={() => setIsMobileMenuOpen(true)}
+      />
+
+      {/* Mobile Full Navigation Menu Sheet / Drawer */}
+      <MobileMenuDrawer
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        activeTab={activeTab}
+        onSelectTab={setActiveTab}
+        user={appState.user}
+        onOpenRegistrarGramas={() => {
+          setSelectedMealTypeForAction('almoco');
+          setIsRegistrarGramasOpen(true);
+        }}
+        onOpenQuickScan={() => {
+          setSelectedMealTypeForAction('almoco');
+          setIsPhotoScannerOpen(true);
+        }}
       />
 
       {/* Registrar em Gramas Modal */}
@@ -486,7 +597,6 @@ export default function App() {
           }));
         }}
       />
-
-      </div>
+    </div>
   );
 }

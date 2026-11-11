@@ -13,8 +13,10 @@ import {
   Upload,
   RefreshCw,
   Lightbulb,
+  MessageSquare,
 } from 'lucide-react';
 import { Recipe, RecipeIngredient, MealType } from '../types';
+import { AiChefChatModal } from './AiChefChatModal';
 
 interface LivroReceitasProps {
   recipes: Recipe[];
@@ -37,7 +39,11 @@ export const LivroReceitas: React.FC<LivroReceitasProps> = ({
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState<Recipe | null>(null);
 
-  // AI Assistant modal state
+  // AI Chat Assistant modal state (ChatGPT / Gemini style)
+  const [isChefChatOpen, setIsChefChatOpen] = useState(false);
+
+  // AI Assistant modal state (structured form generator)
+  const [isAiAssistantOpen, setIsAiAssistantOpen] = useState(false);
   const [isAiAssistantOpen, setIsAiAssistantOpen] = useState(false);
   const [aiMode, setAiMode] = useState<'create' | 'substitute'>('create');
   const [aiIngredients, setAiIngredients] = useState('');
@@ -182,43 +188,93 @@ export const LivroReceitas: React.FC<LivroReceitasProps> = ({
     setIsEditorOpen(true);
   };
 
+  const handleApplyRecipeFromChat = (suggested: any) => {
+    setEditingRecipe(null);
+    setFormTitle(suggested.title || '');
+    setFormDescription(suggested.description || '');
+    setFormPhotoUrl('/src/assets/images/hero_kitchen_cover_1794179944769.jpg');
+    setFormPrepTime(suggested.prepTimeMinutes || 25);
+    setFormServings(suggested.servings || 2);
+    setFormCalories(suggested.caloriesPerServing || 300);
+    setFormProtein(suggested.proteinPerServing || 25);
+    setFormCarbs(suggested.carbsPerServing || 30);
+    setFormFat(suggested.fatPerServing || 8);
+    setFormFiber(suggested.fiberPerServing || 4);
+    if (suggested.ingredients && suggested.ingredients.length > 0) {
+      setFormIngredients(suggested.ingredients);
+    }
+    if (suggested.instructions && suggested.instructions.length > 0) {
+      setFormInstructions(suggested.instructions);
+    }
+    setFormTip(suggested.carinhoTip || 'Criada com ajuda do Chef da Mari IA 💜');
+    setIsEditorOpen(true);
+  };
+
   return (
     <div className="space-y-6 pb-20 lg:pb-12">
       {/* Banner */}
-      <div className="rounded-3xl bg-gradient-to-br from-[#18121F] via-[#100C16] to-[#09070D] border border-[#33263F] p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="rounded-3xl bg-gradient-to-br from-[#18121F] via-[#100C16] to-[#09070D] border border-[#33263F] p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-[#EC4899] uppercase tracking-wider mb-1">
             <BookOpen className="w-4 h-4" />
             <span>Livro Pessoal de Receitas</span>
           </div>
-          <h1 className="font-heading text-2xl lg:text-3xl font-bold text-[#F8F5FC]">
+          <h1 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold text-[#F8F5FC]">
             Receitas da Mari 💜
           </h1>
-          <p className="text-sm text-[#B8AFC4] mt-1 max-w-xl">
+          <p className="text-xs sm:text-sm text-[#B8AFC4] mt-1 max-w-xl">
             Suas receitas saudáveis prediletas com cálculo exato de calorias por porção e assistente culinário inteligente.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 shrink-0 w-full sm:w-auto">
+          {/* Main button: Conversar com o Chef IA estilo Gemini / ChatGPT */}
           <button
-            onClick={() => {
-              setAiMode('create');
-              setAiResult(null);
-              setIsAiAssistantOpen(true);
-            }}
-            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#18121F] hover:bg-[#22192C] text-[#A78BFA] border border-[#8B5CF6]/40 text-xs font-semibold transition-colors cursor-pointer"
+            onClick={() => setIsChefChatOpen(true)}
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#6D28D9] via-[#8B5CF6] to-[#EC4899] text-white text-xs font-bold shadow-lg shadow-[#8B5CF6]/30 hover:opacity-95 transition-all cursor-pointer active:scale-95"
           >
-            <Sparkles className="w-4 h-4 text-[#EC4899]" />
-            <span>Assistente IA</span>
+            <Sparkles className="w-4 h-4 text-pink-200 animate-pulse" />
+            <span>Chef IA (Chat) 💬</span>
           </button>
 
           <button
             onClick={openNewRecipe}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#6D28D9] to-[#8B5CF6] text-white text-xs font-bold shadow-md shadow-[#8B5CF6]/30 cursor-pointer"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#18121F] hover:bg-[#22192C] text-[#F8F5FC] border border-[#33263F] hover:border-[#8B5CF6]/50 text-xs font-semibold cursor-pointer transition-colors"
           >
-            <Plus className="w-4 h-4" />
-            <span>Cadastrar Receita</span>
+            <Plus className="w-4 h-4 text-[#A78BFA]" />
+            <span>Nova Receita</span>
           </button>
+        </div>
+      </div>
+
+      {/* AI Chef Interactive Chat Card Banner */}
+      <div
+        onClick={() => setIsChefChatOpen(true)}
+        className="p-3.5 sm:p-4 rounded-3xl bg-gradient-to-r from-[#18121F] via-[#231730] to-[#18121F] border border-[#8B5CF6]/40 hover:border-[#EC4899]/70 flex items-center justify-between gap-3 cursor-pointer group transition-all shadow-md active:scale-[0.99]"
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-[#6D28D9] via-[#8B5CF6] to-[#EC4899] p-0.5 flex items-center justify-center shadow-md shadow-[#8B5CF6]/30 shrink-0 group-hover:scale-105 transition-transform">
+            <div className="w-full h-full rounded-2xl bg-[#100C16] flex items-center justify-center">
+              <ChefHat className="w-5 h-5 text-[#EC4899]" />
+            </div>
+          </div>
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h3 className="text-xs sm:text-sm font-bold text-[#F8F5FC] group-hover:text-[#A78BFA] transition-colors">
+                Chef da Mari · Assistente IA
+              </h3>
+              <span className="px-2 py-0.5 rounded-full bg-[#EC4899]/20 text-[#EC4899] text-[9px] font-bold uppercase tracking-wider border border-[#EC4899]/30">
+                Como ChatGPT / Gemini
+              </span>
+            </div>
+            <p className="text-[11px] text-[#B8AFC4] mt-0.5 truncate">
+              Converse, peça dicas de preparo, ideias de pratos com o que tem em casa e substituições!
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#100C16] border border-[#8B5CF6]/30 text-xs font-bold text-[#A78BFA] group-hover:border-[#EC4899]/50 group-hover:text-[#F8F5FC] shrink-0 transition-colors">
+          <span className="hidden sm:inline">Abrir conversa</span>
+          <span>→</span>
         </div>
       </div>
 
@@ -336,12 +392,12 @@ export const LivroReceitas: React.FC<LivroReceitasProps> = ({
 
       {/* RECIPE DETAIL MODAL */}
       {selectedRecipe && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-          <div className="relative w-full max-w-2xl bg-[#18121F] border border-[#33263F] rounded-3xl p-6 shadow-2xl my-8 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+          <div className="relative w-full max-w-2xl bg-[#18121F] border-t sm:border border-[#33263F] rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 pb-safe shadow-2xl my-0 sm:my-8 space-y-4 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-[#33263F]">
-              <div className="flex items-center gap-2">
-                <ChefHat className="w-5 h-5 text-[#EC4899]" />
-                <h2 className="text-base font-bold text-[#F8F5FC]">
+              <div className="flex items-center gap-2 min-w-0">
+                <ChefHat className="w-5 h-5 text-[#EC4899] shrink-0" />
+                <h2 className="text-base font-bold text-[#F8F5FC] truncate">
                   {selectedRecipe.title}
                 </h2>
               </div>
@@ -482,8 +538,8 @@ export const LivroReceitas: React.FC<LivroReceitasProps> = ({
 
       {/* CREATE / EDIT RECIPE MODAL */}
       {isEditorOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-          <div className="relative w-full max-w-2xl bg-[#18121F] border border-[#33263F] rounded-3xl p-6 shadow-2xl my-8 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+          <div className="relative w-full max-w-2xl bg-[#18121F] border-t sm:border border-[#33263F] rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 pb-safe shadow-2xl my-0 sm:my-8 space-y-4 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-[#33263F]">
               <h3 className="text-base font-bold text-[#F8F5FC]">
                 {editingRecipe ? 'Editar Receita' : 'Cadastrar Nova Receita'}
@@ -632,8 +688,8 @@ export const LivroReceitas: React.FC<LivroReceitasProps> = ({
 
       {/* AI KITCHEN ASSISTANT MODAL */}
       {isAiAssistantOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-          <div className="relative w-full max-w-xl bg-[#18121F] border border-[#8B5CF6]/50 rounded-3xl p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+          <div className="relative w-full max-w-xl bg-[#18121F] border-t sm:border border-[#8B5CF6]/50 rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 pb-safe shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-[#33263F]">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#EC4899]" />
@@ -758,6 +814,13 @@ export const LivroReceitas: React.FC<LivroReceitasProps> = ({
           </div>
         </div>
       )}
+
+      {/* AI Chef Interactive Chat Modal (ChatGPT / Gemini style) */}
+      <AiChefChatModal
+        isOpen={isChefChatOpen}
+        onClose={() => setIsChefChatOpen(false)}
+        onApplyRecipeToForm={handleApplyRecipeFromChat}
+      />
     </div>
   );
 };

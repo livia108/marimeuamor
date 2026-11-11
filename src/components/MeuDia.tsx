@@ -174,51 +174,51 @@ export const MeuDia: React.FC<MeuDiaProps> = ({
       </div>
 
       {/* Numerical Calorie Summary (3 Centered Responsive Side-by-Side Cards, STRICTLY NO PROGRESS BARS) */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-4 w-full">
+      <div className="grid grid-cols-3 gap-1.5 sm:gap-4 w-full">
         {/* Meta Diária */}
-        <div className="rounded-2xl bg-[#18121F] border border-[#33263F] p-3 sm:p-5 shadow-sm text-center flex flex-col items-center justify-center">
-          <span className="text-[10px] sm:text-xs uppercase font-medium tracking-wider text-[#B8AFC4]">
+        <div className="rounded-2xl bg-[#18121F] border border-[#33263F] p-2.5 sm:p-5 shadow-sm text-center flex flex-col items-center justify-center min-w-0">
+          <span className="text-[9px] sm:text-xs uppercase font-medium tracking-wider text-[#B8AFC4] truncate max-w-full">
             Meta Diária
           </span>
-          <div className="mt-1 sm:mt-2 flex items-baseline justify-center gap-1">
-            <span className="font-heading text-lg sm:text-3xl lg:text-4xl font-bold text-[#F8F5FC] font-mono-numbers">
+          <div className="mt-1 sm:mt-2 flex items-baseline justify-center gap-0.5 sm:gap-1">
+            <span className="font-heading text-base sm:text-3xl lg:text-4xl font-bold text-[#F8F5FC] font-mono-numbers">
               {user.calorieGoal}
             </span>
-            <span className="text-[10px] sm:text-xs font-medium text-[#A78BFA]">kcal</span>
+            <span className="text-[9px] sm:text-xs font-medium text-[#A78BFA]">kcal</span>
           </div>
-          <p className="text-[10px] sm:text-[11px] text-[#B8AFC4]/70 mt-0.5 sm:mt-1 hidden sm:block">
+          <p className="text-[9px] sm:text-[11px] text-[#B8AFC4]/70 mt-0.5 sm:mt-1 hidden sm:block">
             Plano da Mari
           </p>
         </div>
 
         {/* Consumidas Hoje */}
-        <div className="rounded-2xl bg-[#18121F] border border-[#33263F] p-3 sm:p-5 shadow-sm text-center flex flex-col items-center justify-center">
-          <span className="text-[10px] sm:text-xs uppercase font-medium tracking-wider text-[#B8AFC4]">
+        <div className="rounded-2xl bg-[#18121F] border border-[#33263F] p-2.5 sm:p-5 shadow-sm text-center flex flex-col items-center justify-center min-w-0">
+          <span className="text-[9px] sm:text-xs uppercase font-medium tracking-wider text-[#B8AFC4] truncate max-w-full">
             Consumidas
           </span>
-          <div className="mt-1 sm:mt-2 flex items-baseline justify-center gap-1">
-            <span className="font-heading text-lg sm:text-3xl lg:text-4xl font-bold text-[#EC4899] font-mono-numbers">
+          <div className="mt-1 sm:mt-2 flex items-baseline justify-center gap-0.5 sm:gap-1">
+            <span className="font-heading text-base sm:text-3xl lg:text-4xl font-bold text-[#EC4899] font-mono-numbers">
               {consumedCalories}
             </span>
-            <span className="text-[10px] sm:text-xs font-medium text-[#EC4899]/80">kcal</span>
+            <span className="text-[9px] sm:text-xs font-medium text-[#EC4899]/80">kcal</span>
           </div>
-          <p className="text-[10px] sm:text-[11px] text-[#B8AFC4]/70 mt-0.5 sm:mt-1 hidden sm:block">
+          <p className="text-[9px] sm:text-[11px] text-[#B8AFC4]/70 mt-0.5 sm:mt-1 hidden sm:block">
             {todayLogs.length} registro(s)
           </p>
         </div>
 
         {/* Calorias Restantes */}
-        <div className="rounded-2xl bg-[#18121F] border border-[#33263F] p-3 sm:p-5 shadow-sm text-center flex flex-col items-center justify-center">
-          <span className="text-[10px] sm:text-xs uppercase font-medium tracking-wider text-[#B8AFC4]">
+        <div className="rounded-2xl bg-[#18121F] border border-[#33263F] p-2.5 sm:p-5 shadow-sm text-center flex flex-col items-center justify-center min-w-0">
+          <span className="text-[9px] sm:text-xs uppercase font-medium tracking-wider text-[#B8AFC4] truncate max-w-full">
             Restantes
           </span>
-          <div className="mt-1 sm:mt-2 flex items-baseline justify-center gap-1">
-            <span className="font-heading text-lg sm:text-3xl lg:text-4xl font-bold text-[#A78BFA] font-mono-numbers">
+          <div className="mt-1 sm:mt-2 flex items-baseline justify-center gap-0.5 sm:gap-1">
+            <span className="font-heading text-base sm:text-3xl lg:text-4xl font-bold text-[#A78BFA] font-mono-numbers">
               {remainingCalories}
             </span>
-            <span className="text-[10px] sm:text-xs font-medium text-[#A78BFA]/80">kcal</span>
+            <span className="text-[9px] sm:text-xs font-medium text-[#A78BFA]/80">kcal</span>
           </div>
-          <p className="text-[10px] sm:text-[11px] text-[#B8AFC4]/70 mt-0.5 sm:mt-1 hidden sm:block">
+          <p className="text-[9px] sm:text-[11px] text-[#B8AFC4]/70 mt-0.5 sm:mt-1 hidden sm:block">
             Disponível hoje
           </p>
         </div>
@@ -310,28 +310,46 @@ export const MeuDia: React.FC<MeuDiaProps> = ({
                 className="rounded-2xl bg-[#18121F] border border-[#33263F] overflow-hidden transition-all hover:border-[#8B5CF6]/40"
               >
                 {/* Meal Header */}
-                <div className="p-3 sm:p-4 flex items-center justify-between gap-2 sm:gap-4 border-b border-[#33263F]/40">
-                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                <div className="p-2.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 border-b border-[#33263F]/40">
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                     {editingId === type.id ? (
-                      <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <input
-                          value={editIcon}
-                          onChange={(e) => setEditIcon(e.target.value)}
-                          className="w-9 text-center py-1 rounded-xl bg-[#100C16] border border-[#33263F] text-base focus:outline-none focus:border-[#8B5CF6]"
-                          title="Ícone (emoji)"
-                        />
-                        <input
-                          value={editLabel}
-                          onChange={(e) => setEditLabel(e.target.value)}
-                          className="flex-1 min-w-0 py-1 px-2 rounded-xl bg-[#100C16] border border-[#33263F] text-xs sm:text-sm text-[#F8F5FC] focus:outline-none focus:border-[#8B5CF6]"
-                          placeholder="Nome da refeição"
-                        />
-                        <input
-                          value={editTime}
-                          onChange={(e) => setEditTime(e.target.value)}
-                          className="w-28 py-1 px-2 rounded-xl bg-[#100C16] border border-[#33263F] text-[10px] sm:text-[11px] text-[#B8AFC4] focus:outline-none focus:border-[#8B5CF6]"
-                          placeholder="Horário"
-                        />
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 flex-1 min-w-0 w-full">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <input
+                            value={editIcon}
+                            onChange={(e) => setEditIcon(e.target.value)}
+                            className="w-9 text-center py-1.5 rounded-xl bg-[#100C16] border border-[#33263F] text-base focus:outline-none focus:border-[#8B5CF6] shrink-0"
+                            title="Ícone (emoji)"
+                          />
+                          <input
+                            value={editLabel}
+                            onChange={(e) => setEditLabel(e.target.value)}
+                            className="flex-1 min-w-0 py-1.5 px-2.5 rounded-xl bg-[#100C16] border border-[#33263F] text-xs sm:text-sm text-[#F8F5FC] focus:outline-none focus:border-[#8B5CF6]"
+                            placeholder="Nome da refeição"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <input
+                            value={editTime}
+                            onChange={(e) => setEditTime(e.target.value)}
+                            className="flex-1 sm:w-28 py-1.5 px-2.5 rounded-xl bg-[#100C16] border border-[#33263F] text-[11px] text-[#B8AFC4] focus:outline-none focus:border-[#8B5CF6]"
+                            placeholder="Horário (ex: 12:30)"
+                          />
+                          <button
+                            onClick={saveEdit}
+                            title="Salvar"
+                            className="p-1.5 sm:p-2 rounded-xl bg-[#8B5CF6] text-white hover:bg-[#7C3AED] transition-colors cursor-pointer shrink-0"
+                          >
+                            <Check className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={cancelEdit}
+                            title="Cancelar"
+                            className="p-1.5 sm:p-2 rounded-xl bg-[#100C16] text-[#B8AFC4] border border-[#33263F] hover:text-[#F8F5FC] transition-colors cursor-pointer shrink-0"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                     ) : (
                       <>
@@ -349,74 +367,55 @@ export const MeuDia: React.FC<MeuDiaProps> = ({
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                    {editingId === type.id ? (
-                      <>
-                        <button
-                          onClick={saveEdit}
-                          title="Salvar"
-                          className="p-1.5 sm:p-2 rounded-xl bg-[#8B5CF6] text-white hover:bg-[#7C3AED] transition-colors cursor-pointer"
-                        >
-                          <Check className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={cancelEdit}
-                          title="Cancelar"
-                          className="p-1.5 sm:p-2 rounded-xl bg-[#100C16] text-[#B8AFC4] border border-[#33263F] hover:text-[#F8F5FC] transition-colors cursor-pointer"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        {logsForType.length > 0 && (
-                          <div className="text-right">
-                            <div className="text-xs sm:text-sm font-bold text-[#A78BFA] font-mono-numbers">
-                              {totalMealKcal} kcal
-                            </div>
-                            <div className="text-[10px] text-[#B8AFC4] font-mono-numbers">
-                              {totalMealGrams > 0 ? `${totalMealGrams}g` : `${logsForType.length} item(ns)`}
-                            </div>
+                  {editingId !== type.id && (
+                    <div className="flex items-center justify-between sm:justify-end gap-1.5 sm:gap-2.5 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-[#33263F]/20">
+                      {logsForType.length > 0 && (
+                        <div className="text-left sm:text-right mr-auto sm:mr-0">
+                          <div className="text-xs sm:text-sm font-bold text-[#A78BFA] font-mono-numbers">
+                            {totalMealKcal} kcal
                           </div>
-                        )}
-
-                        {/* Quick Add Menu */}
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => onOpenRegistrarGramas(type.id)}
-                            title="Colocar em gramas para esta refeição"
-                            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-[#100C16] hover:bg-[#22192C] text-[#A78BFA] border border-[#33263F] hover:border-[#8B5CF6]/50 text-xs font-semibold transition-colors cursor-pointer"
-                          >
-                            <Scale className="w-3.5 h-3.5 text-[#A78BFA]" />
-                            <span className="hidden sm:inline">+ Gramas</span>
-                          </button>
-
-                          <button
-                            onClick={() => onOpenPhotoScanner(type.id)}
-                            title="Fotografar esta refeição"
-                            className="p-1.5 sm:p-2 rounded-xl bg-[#100C16] hover:bg-[#22192C] text-[#EC4899] border border-[#33263F] hover:border-[#EC4899]/50 transition-colors cursor-pointer"
-                          >
-                            <Camera className="w-4 h-4" />
-                          </button>
+                          <div className="text-[10px] text-[#B8AFC4] font-mono-numbers">
+                            {totalMealGrams > 0 ? `${totalMealGrams}g` : `${logsForType.length} item(ns)`}
+                          </div>
                         </div>
+                      )}
+
+                      {/* Quick Add Menu */}
+                      <div className="flex items-center gap-1 ml-auto sm:ml-0">
+                        <button
+                          onClick={() => onOpenRegistrarGramas(type.id)}
+                          title="Colocar em gramas para esta refeição"
+                          className="flex items-center gap-1 px-2 py-1.5 sm:px-2.5 rounded-xl bg-[#100C16] hover:bg-[#22192C] text-[#A78BFA] border border-[#33263F] hover:border-[#8B5CF6]/50 text-xs font-semibold transition-colors cursor-pointer"
+                        >
+                          <Scale className="w-3.5 h-3.5 text-[#A78BFA]" />
+                          <span className="hidden sm:inline">+ Gramas</span>
+                        </button>
 
                         <button
-                          onClick={() => startEdit(type)}
-                          title="Editar nome e horário"
-                          className="p-1.5 sm:p-2 rounded-xl bg-[#100C16] hover:bg-[#22192C] text-[#B8AFC4] border border-[#33263F] hover:border-[#8B5CF6]/50 transition-colors cursor-pointer"
+                          onClick={() => onOpenPhotoScanner(type.id)}
+                          title="Fotografar esta refeição"
+                          className="p-1.5 sm:p-2 rounded-xl bg-[#100C16] hover:bg-[#22192C] text-[#EC4899] border border-[#33263F] hover:border-[#EC4899]/50 transition-colors cursor-pointer"
                         >
-                          <Pencil className="w-4 h-4" />
+                          <Camera className="w-4 h-4" />
                         </button>
-                        <button
-                          onClick={() => removeMeal(type.id)}
-                          title="Remover refeição"
-                          className="p-1.5 sm:p-2 rounded-xl bg-[#100C16] hover:bg-[#22192C] text-[#B8AFC4] border border-[#33263F] hover:border-red-500/50 hover:text-red-400 transition-colors cursor-pointer"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </>
-                    )}
-                  </div>
+                      </div>
+
+                      <button
+                        onClick={() => startEdit(type)}
+                        title="Editar nome e horário"
+                        className="p-1.5 sm:p-2 rounded-xl bg-[#100C16] hover:bg-[#22192C] text-[#B8AFC4] border border-[#33263F] hover:border-[#8B5CF6]/50 transition-colors cursor-pointer"
+                      >
+                        <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </button>
+                      <button
+                        onClick={() => removeMeal(type.id)}
+                        title="Remover refeição"
+                        className="p-1.5 sm:p-2 rounded-xl bg-[#100C16] hover:bg-[#22192C] text-[#B8AFC4] border border-[#33263F] hover:border-red-500/50 hover:text-red-400 transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Meal Items List */}

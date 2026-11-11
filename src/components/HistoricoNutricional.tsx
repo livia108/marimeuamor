@@ -49,15 +49,15 @@ export const HistoricoNutricional: React.FC<HistoricoNutricionalProps> = ({
   return (
     <div className="space-y-6 pb-20 lg:pb-12">
       {/* Header Banner */}
-      <div className="rounded-3xl bg-gradient-to-br from-[#18121F] via-[#100C16] to-[#09070D] border border-[#33263F] p-6 lg:p-8">
+      <div className="rounded-3xl bg-gradient-to-br from-[#18121F] via-[#100C16] to-[#09070D] border border-[#33263F] p-4 sm:p-6 lg:p-8">
         <div className="flex items-center gap-2 text-xs font-semibold text-[#8B5CF6] uppercase tracking-wider mb-1">
           <History className="w-4 h-4" />
           <span>Histórico Pessoal de Mariana</span>
         </div>
-        <h1 className="font-heading text-2xl lg:text-3xl font-bold text-[#F8F5FC]">
+        <h1 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold text-[#F8F5FC]">
           Registro Nutricional Permanente 💜
         </h1>
-        <p className="text-sm text-[#B8AFC4] mt-1 max-w-xl">
+        <p className="text-xs sm:text-sm text-[#B8AFC4] mt-1 max-w-xl">
           Acompanhe sua consistência ao longo dos dias, consulte refeições antigas e mantenha o controle da sua saúde.
         </p>
       </div>
@@ -69,7 +69,7 @@ export const HistoricoNutricional: React.FC<HistoricoNutricionalProps> = ({
             Média Diária de Calorias
           </span>
           <div className="mt-2 flex items-baseline justify-center gap-1 font-mono-numbers">
-            <span className="text-3xl font-bold text-[#EC4899]">{avgDailyCalories}</span>
+            <span className="text-2xl sm:text-3xl font-bold text-[#EC4899]">{avgDailyCalories}</span>
             <span className="text-xs text-[#B8AFC4]">kcal/dia</span>
           </div>
           <span className="text-[11px] text-[#A78BFA] mt-1 block">
@@ -82,7 +82,7 @@ export const HistoricoNutricional: React.FC<HistoricoNutricionalProps> = ({
             Total de Registros
           </span>
           <div className="mt-2 flex items-baseline justify-center gap-1 font-mono-numbers">
-            <span className="text-3xl font-bold text-[#8B5CF6]">{allLogs.length}</span>
+            <span className="text-2xl sm:text-3xl font-bold text-[#8B5CF6]">{allLogs.length}</span>
             <span className="text-xs text-[#B8AFC4]">refeições</span>
           </div>
           <span className="text-[11px] text-[#B8AFC4] mt-1 block">
@@ -92,10 +92,10 @@ export const HistoricoNutricional: React.FC<HistoricoNutricionalProps> = ({
       </div>
 
       {/* View Mode Tabs */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar">
         <button
           onClick={() => setViewMode('diario')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
+          className={`whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
             viewMode === 'diario'
               ? 'bg-[#8B5CF6] text-white'
               : 'bg-[#18121F] text-[#B8AFC4] border border-[#33263F]'
@@ -105,7 +105,7 @@ export const HistoricoNutricional: React.FC<HistoricoNutricionalProps> = ({
         </button>
         <button
           onClick={() => setViewMode('semanal')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
+          className={`whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
             viewMode === 'semanal'
               ? 'bg-[#8B5CF6] text-white'
               : 'bg-[#18121F] text-[#B8AFC4] border border-[#33263F]'
@@ -115,7 +115,7 @@ export const HistoricoNutricional: React.FC<HistoricoNutricionalProps> = ({
         </button>
         <button
           onClick={() => setViewMode('mensal')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
+          className={`whitespace-nowrap px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
             viewMode === 'mensal'
               ? 'bg-[#8B5CF6] text-white'
               : 'bg-[#18121F] text-[#B8AFC4] border border-[#33263F]'

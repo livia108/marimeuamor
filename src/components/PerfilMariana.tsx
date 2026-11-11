@@ -142,21 +142,21 @@ export const PerfilMariana: React.FC<PerfilMarianaProps> = ({
                 <span className="text-base font-bold text-[#EC4899]">kcal</span>
               </div>
             ) : (
-              <div className="flex items-center justify-center gap-3 sm:gap-6 w-full">
+              <div className="flex items-center justify-center gap-2 sm:gap-6 w-full">
                 {/* Minus 50 */}
                 <button
                   type="button"
                   onClick={() => handleAdjustCalories(-50)}
-                  className="w-12 h-12 rounded-2xl bg-[#100C16] border border-[#33263F] hover:border-[#EC4899]/70 text-[#B8AFC4] hover:text-[#EC4899] hover:bg-[#EC4899]/10 active:scale-90 flex items-center justify-center transition-all cursor-pointer shadow-md"
+                  className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[#100C16] border border-[#33263F] hover:border-[#EC4899]/70 text-[#B8AFC4] hover:text-[#EC4899] hover:bg-[#EC4899]/10 active:scale-90 flex items-center justify-center transition-all cursor-pointer shadow-md shrink-0"
                   title="Diminuir 50 kcal"
                 >
                   <Minus className="w-5 h-5" />
                 </button>
 
                 {/* Big Display */}
-                <div className="text-center px-4 py-2 rounded-2xl bg-[#100C16]/80 border border-[#33263F] min-w-[170px] shadow-inner">
+                <div className="text-center px-3 sm:px-4 py-2 rounded-2xl bg-[#100C16]/80 border border-[#33263F] min-w-[130px] sm:min-w-[170px] shadow-inner">
                   <div className="flex items-baseline justify-center gap-1.5">
-                    <span className="text-3xl sm:text-4xl font-black text-[#F8F5FC] tracking-tight">
+                    <span className="text-2xl sm:text-4xl font-black text-[#F8F5FC] tracking-tight">
                       {formData.calorieGoal.toLocaleString('pt-BR')}
                     </span>
                     <span className="text-xs font-bold text-[#EC4899] uppercase tracking-wider">
@@ -172,7 +172,7 @@ export const PerfilMariana: React.FC<PerfilMarianaProps> = ({
                 <button
                   type="button"
                   onClick={() => handleAdjustCalories(50)}
-                  className="w-12 h-12 rounded-2xl bg-[#100C16] border border-[#33263F] hover:border-[#8B5CF6]/70 text-[#B8AFC4] hover:text-[#8B5CF6] hover:bg-[#8B5CF6]/10 active:scale-90 flex items-center justify-center transition-all cursor-pointer shadow-md"
+                  className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[#100C16] border border-[#33263F] hover:border-[#8B5CF6]/70 text-[#B8AFC4] hover:text-[#8B5CF6] hover:bg-[#8B5CF6]/10 active:scale-90 flex items-center justify-center transition-all cursor-pointer shadow-md shrink-0"
                   title="Aumentar 50 kcal"
                 >
                   <Plus className="w-5 h-5" />
@@ -181,7 +181,7 @@ export const PerfilMariana: React.FC<PerfilMarianaProps> = ({
             )}
 
             {/* Quick Adjustment Pills */}
-            <div className="flex items-center gap-2 mt-3">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-3">
               <button
                 type="button"
                 onClick={() => handleAdjustCalories(-100)}

@@ -116,7 +116,7 @@ export const RegistrarGramasModal: React.FC<RegistrarGramasModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="relative w-full max-w-lg bg-[#18121F] border-t sm:border border-[#33263F] rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto overflow-x-hidden space-y-3.5 sm:space-y-4">
+      <div className="relative w-full max-w-lg bg-[#18121F] border-t sm:border border-[#33263F] rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 pb-safe shadow-2xl max-h-[92vh] overflow-y-auto overflow-x-hidden space-y-3.5 sm:space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#33263F]">
           <div className="flex items-center gap-2.5 min-w-0">
@@ -145,20 +145,20 @@ export const RegistrarGramasModal: React.FC<RegistrarGramasModalProps> = ({
           <label className="text-[11px] sm:text-xs font-medium text-[#B8AFC4] block">
             Escolha o horário da refeição:
           </label>
-          <div className="grid grid-cols-5 gap-1 sm:gap-1.5">
+          <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-5 gap-1.5">
             {slots.map((m) => (
               <button
                 key={m.id}
                 type="button"
                 onClick={() => setSelectedMeal(m.id)}
-                className={`py-1.5 sm:py-2 px-1 rounded-xl text-center flex flex-col items-center justify-center transition-all cursor-pointer ${
+                className={`py-2 px-2 rounded-xl text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   selectedMeal === m.id
-                    ? 'bg-gradient-to-b from-[#8B5CF6] to-[#6D28D9] text-white font-semibold shadow-md shadow-[#8B5CF6]/30 scale-[1.02]'
+                    ? 'bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white font-semibold shadow-md shadow-[#8B5CF6]/30'
                     : 'bg-[#100C16] text-[#B8AFC4] border border-[#33263F] hover:border-[#8B5CF6]/40 hover:text-[#F8F5FC]'
                 }`}
               >
-                <span className="text-xs sm:text-sm">{m.icon}</span>
-                <span className="text-[9px] sm:text-[10px] mt-0.5 truncate max-w-full">
+                <span className="text-xs sm:text-sm shrink-0">{m.icon}</span>
+                <span className="text-xs truncate">
                   {m.label}
                 </span>
               </button>

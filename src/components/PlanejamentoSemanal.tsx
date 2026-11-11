@@ -145,31 +145,31 @@ export const PlanejamentoSemanal: React.FC<PlanejamentoSemanalProps> = ({
   return (
     <div className="space-y-6 pb-20 lg:pb-12">
       {/* Header Banner */}
-      <div className="rounded-3xl bg-gradient-to-br from-[#18121F] via-[#100C16] to-[#09070D] border border-[#33263F] p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="rounded-3xl bg-gradient-to-br from-[#18121F] via-[#100C16] to-[#09070D] border border-[#33263F] p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-[#8B5CF6] uppercase tracking-wider mb-1">
             <CalendarDays className="w-4 h-4" />
             <span>Organização Semanal</span>
           </div>
-          <h1 className="font-heading text-2xl lg:text-3xl font-bold text-[#F8F5FC]">
+          <h1 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold text-[#F8F5FC]">
             Planejamento dos 7 Dias 💜
           </h1>
-          <p className="text-sm text-[#B8AFC4] mt-1 max-w-xl">
+          <p className="text-xs sm:text-sm text-[#B8AFC4] mt-1 max-w-xl">
             Atribua suas marmitas e receitas aos dias da semana para uma alimentação tranquila, sem surpresas e com carinho.
           </p>
         </div>
 
         <button
           onClick={() => setIsGroceryOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#18121F] hover:bg-[#22192C] text-[#A78BFA] border border-[#8B5CF6]/40 text-xs font-bold transition-colors cursor-pointer shrink-0"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-[#18121F] hover:bg-[#22192C] text-[#A78BFA] border border-[#8B5CF6]/40 text-xs font-bold transition-colors cursor-pointer shrink-0"
         >
           <ShoppingBag className="w-4 h-4 text-[#EC4899]" />
-          <span>Lista de Compras da Semana ({groceryList.length})</span>
+          <span>Lista de Compras ({groceryList.length})</span>
         </button>
       </div>
 
-      {/* 7 Days Carousel Selector */}
-      <div className="grid grid-cols-7 gap-2 overflow-x-auto pb-1">
+      {/* 7 Days Responsive Selector: Smooth horizontal scroll on mobile, 7-col grid on desktop */}
+      <div className="flex sm:grid sm:grid-cols-7 gap-2 overflow-x-auto pb-2 no-scrollbar">
         {DAYS_OF_WEEK.map((day) => {
           const itemsCount = (weeklyPlan[day.key] || []).length;
           const isSelected = selectedDay === day.key;
@@ -178,19 +178,19 @@ export const PlanejamentoSemanal: React.FC<PlanejamentoSemanalProps> = ({
             <button
               key={day.key}
               onClick={() => setSelectedDay(day.key)}
-              className={`p-3 rounded-2xl text-center border transition-all cursor-pointer ${
+              className={`min-w-[82px] sm:min-w-0 flex-1 shrink-0 p-2.5 sm:p-3 rounded-2xl text-center border transition-all cursor-pointer ${
                 isSelected
                   ? 'bg-gradient-to-b from-[#6D28D9]/40 to-[#18121F] border-[#8B5CF6] text-white shadow-lg shadow-[#8B5CF6]/20'
                   : 'bg-[#18121F] border-[#33263F] text-[#B8AFC4] hover:text-[#F8F5FC] hover:border-[#8B5CF6]/40'
               }`}
             >
-              <span className="text-[11px] font-semibold block uppercase tracking-wider">
+              <span className="text-[10px] sm:text-[11px] font-semibold block uppercase tracking-wider">
                 {day.short}
               </span>
-              <span className="text-sm font-bold block mt-1">
+              <span className="text-xs sm:text-sm font-bold block mt-0.5 truncate">
                 {day.label.split('-')[0]}
               </span>
-              <span className="text-[10px] text-[#A78BFA] block mt-1">
+              <span className="text-[10px] text-[#A78BFA] block mt-0.5">
                 {itemsCount} {itemsCount === 1 ? 'refeição' : 'refeições'}
               </span>
             </button>

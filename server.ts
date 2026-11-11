@@ -23,14 +23,53 @@ app.use(express.json({ limit: '30mb' }));
 app.use(express.urlencoded({ extended: true, limit: '30mb' }));
 
 // Initialize Google Gemini SDK on the server side
+const GEMINI_API_KEY =
+  process.env.GEMINI_API_KEY || 'AQ.Ab8RN6L_byCX-0HORZhYWqGXIMWHMJSa9Pz5iO1_cLSP5Z68Iw';
+
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: GEMINI_API_KEY,
   httpOptions: {
     headers: {
       'User-Agent': 'aistudio-build',
     },
   },
 });
+
+// Helper universal com fallback automático de modelos Gemini
+async function callGemini(params: {
+  contents: any;
+  systemInstruction?: string;
+  responseMimeType?: string;
+  temperature?: number;
+}) {
+  const candidateModels = [
+    'gemini-2.5-flash',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash',
+    'gemini-3.8-flash',
+  ];
+
+  let lastError: any = null;
+  for (const model of candidateModels) {
+    try {
+      const config: any = {};
+      if (params.systemInstruction) config.systemInstruction = params.systemInstruction;
+      if (params.responseMimeType) config.responseMimeType = params.responseMimeType;
+      if (params.temperature !== undefined) config.temperature = params.temperature;
+
+      const response = await ai.models.generateContent({
+        model,
+        contents: params.contents,
+        config: Object.keys(config).length > 0 ? config : undefined,
+      });
+      return response;
+    } catch (err: any) {
+      lastError = err;
+      console.warn(`Tentativa com modelo ${model} não respondeu:`, err?.message || err);
+    }
+  }
+  throw lastError;
+}
 
 // ---------------- API ROUTES ----------------
 
@@ -200,8 +239,7 @@ Responda OBRIGATORIAMENTE em formato JSON com o seguinte formato:
 }
 `;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+    const response = await callGemini({
       contents: {
         parts: [
           {
@@ -213,9 +251,7 @@ Responda OBRIGATORIAMENTE em formato JSON com o seguinte formato:
           { text: promptText },
         ],
       },
-      config: {
-        responseMimeType: 'application/json',
-      },
+      responseMimeType: 'application/json',
     });
 
     const responseText = response.text || '{}';
@@ -270,8 +306,7 @@ Retorne estritamente em formato JSON:
 }
 `;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+    const response = await callGemini({
       contents: {
         parts: [
           {
@@ -283,9 +318,7 @@ Retorne estritamente em formato JSON:
           { text: promptText },
         ],
       },
-      config: {
-        responseMimeType: 'application/json',
-      },
+      responseMimeType: 'application/json',
     });
 
     const parsed = JSON.parse(response.text || '{}');
@@ -356,12 +389,9 @@ Responda em formato JSON:
 `;
     }
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+    const response = await callGemini({
       contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-      },
+      responseMimeType: 'application/json',
     });
 
     const parsed = JSON.parse(response.text || '{}');
@@ -369,6 +399,60 @@ Responda em formato JSON:
   } catch (err: any) {
     console.error('Erro no assistente de receitas:', err);
     return res.status(500).json({ error: 'Erro ao gerar sugestão de receita' });
+  }
+});
+
+// POST Gemini Chat Assistant (receitas e dicas de comida estilo ChatGPT / Gemini)
+app.post('/api/gemini/chat', async (req, res) => {
+  try {
+    const { message, history } = req.body || {};
+    if (!message || typeof message !== 'string') {
+      return res.status(400).json({ error: 'Mensagem não fornecida' });
+    }
+
+    // Monta o histórico de conversa no formato do Gemini
+    const contents: any[] = [];
+    if (Array.isArray(history)) {
+      for (const h of history) {
+        if (h && h.role && h.text) {
+          contents.push({
+            role: h.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: String(h.text) }],
+          });
+        }
+      }
+    }
+    contents.push({ role: 'user', parts: [{ text: message }] });
+
+    const systemInstruction = `Você é o "Chef da Mari 💜", o assistente de inteligência artificial culinário pessoal e afetuoso do aplicativo Our Little Kitchen (atuando com inteligência e simpatia igual ao ChatGPT e Gemini, mas totalmente especializado na cozinha, rotina e alimentação da Mariana).
+Mariana ama comida caseira, saudável, saborosa, balanceada e prática.
+
+Você pode ajudar com:
+- Dicas e sugestões de pratos com base nos ingredientes que ela tem em casa.
+- Dicas culinárias (ponto de carne, técnicas de cozimento, tempo na airfryer, forno, frigideira ou vapor).
+- Substituições saudáveis (ex: trocar creme de leite por iogurte natural, farinhas integrais, reduzir óleo, adoçar sem açúcar).
+- Estimativas realistas de calorias e macros (proteínas, carboidratos, gorduras, fibras) baseadas na Tabela TACO/TBCA.
+- Dicas de conservação, preparo antecipado e congelamento de marmitas da semana.
+- Lanches rápidos de trabalho, opções pré-treino, doces saudáveis sem açúcar refinado.
+
+Estilo de conversa:
+- Fale em português do Brasil com tom caloroso, carinhoso e encorajador (use emojis como 💜, 🌸, 🥗, ✨).
+- Use formatação Markdown: títulos (###), negrito para ingredientes/quantidades e listas com marcadores (-) ou números (1., 2.) para passos.
+- Quando sugerir uma receita, forneça nome atraente, porções, tempo, lista clara de ingredientes com medidas e modo de preparo passo a passo.`;
+
+    const response = await callGemini({
+      contents,
+      systemInstruction,
+      temperature: 0.7,
+    });
+
+    const reply = response.text || 'Não consegui gerar uma resposta. Tente novamente.';
+    return res.json({ reply });
+  } catch (err: any) {
+    console.error('Erro no chat de receitas:', err);
+    return res.status(500).json({
+      error: 'Erro ao conversar com o assistente: ' + (err.message || 'Erro interno'),
+    });
   }
 });
 
@@ -531,8 +615,7 @@ Se não encontrar nenhum código de barras na foto, retorne:
 }
 `;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+    const response = await callGemini({
       contents: {
         parts: [
           {
@@ -544,9 +627,7 @@ Se não encontrar nenhum código de barras na foto, retorne:
           { text: promptText },
         ],
       },
-      config: {
-        responseMimeType: 'application/json',
-      },
+      responseMimeType: 'application/json',
     });
 
     const parsed = JSON.parse(response.text || '{}');
