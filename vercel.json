@@ -25,7 +25,7 @@
   "rewrites": [
     {
       "from": "/(.*)",
-      "to": "https://marimeuamor-kp3n.vercel.app/$1"
+      "to": "https://marimeuamorr.vercel.app/$1"
     }
   ],
   "build": {
