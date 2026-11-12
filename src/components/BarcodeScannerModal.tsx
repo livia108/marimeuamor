@@ -120,7 +120,7 @@ export const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({
 
   const startBarcodeScanner = async () => {
     setErrorMsg(null);
-    setStatusInfo('Iniciando câmera... Isso pode levar alguns segundos no celular.');
+    setStatusInfo('Iniciando câmera...');
     setIsScanning(true);
 
     try {
@@ -140,43 +140,28 @@ export const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({
       });
       scannerRef.current = scanner;
 
-      // Try to get the best camera for mobile - prefer high resolution
+      // Try back camera first
       let cameraConfig: any = { facingMode: 'environment' };
       try {
         const cameras = await Html5Qrcode.getCameras();
         if (cameras && cameras.length > 0) {
-          // Prefer camera with "back" or "rear" in label, or any non-front camera
           const backCam = cameras.find((c) =>
             c.label.toLowerCase().includes('back') ||
-            c.label.toLowerCase().includes('rear') ||
-            c.label.toLowerCase().includes('environment') ||
-            c.label.toLowerCase().includes('traseira')
+            c.label.toLowerCase().includes('traseira') ||
+            c.label.toLowerCase().includes('environment')
           );
-          if (backCam) {
-            cameraConfig = backCam.id;
-          } else {
-            // Fallback to first available non-front camera
-            const nonFrontCam = cameras.find((c) =>
-              !c.label.toLowerCase().includes('front') &&
-              !c.label.toLowerCase().includes('traseira')
-            );
-            cameraConfig = nonFrontCam ? nonFrontCam.id : cameras[0].id;
-          }
+          cameraConfig = backCam ? backCam.id : cameras[0].id;
         }
       } catch (camErr) {
-        console.warn('Erro ao listar câmeras:', camErr);
         // Continue with facingMode environment fallback
       }
 
-      // Improved scanner config for better focus on mobile
       await scanner.start(
         cameraConfig,
         {
-          fps: 30, // Higher fps for better tracking
-          qrbox: { width: 300, height: 180 }, // Larger scanning area
+          fps: 15,
+          qrbox: { width: 280, height: 160 },
           aspectRatio: 1.5,
-          // Add resolution boost
-          // disableFlip: false,
         },
         async (decodedText) => {
           await stopScanner();
@@ -188,13 +173,13 @@ export const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({
         }
       );
 
-      setStatusInfo('Aponte para as barras pretas do código. Toque na tela para focar se necessário.');
+      setStatusInfo('Aponte para as barras pretas do código...');
     } catch (err: any) {
       console.warn('Erro ao inicializar câmera do scanner:', err);
       setIsScanning(false);
       setStatusInfo(null);
       setErrorMsg(
-        'A câmera não pôde ser iniciada. Tente: 1) Verifique se tem permissão de câmera no navegador 2) Use "Tirar Foto" ou "Galeria" 3) Digite o número do código manualmente. Em alguns celulares, a câmera precisa de HTTPS (o site já está em HTTPS).'
+        'A câmera em tempo real não pôde ser iniciada. No celular isso geralmente ocorre porque o site não está em HTTPS (a câmera exige conexão segura). Use "Tirar Foto" ou "Galeria" abaixo, ou digite o número do código manualmente.'
       );
     }
   };
@@ -518,28 +503,8 @@ export const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({
           {!product && !isManualEntry && (
             <>
               {/* Camera Scanner Viewport */}
-              <div className="relative rounded-2xl bg-[#100C16] border border-[#33263F] overflow-hidden min-h-[240px] flex flex-col items-center justify-center p-4">
-                {/* Camera viewport with focus overlay */}
-                <div className="relative w-full max-w-sm rounded-xl overflow-hidden">
-                  <div id="barcode-scanner-viewport" className="w-full" />
-                  
-                  {/* Focus overlay when scanning - shows scanning area */}
-                  {isScanning && (
-                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                      <div className="relative w-72 h-44 border-2 border-[#EC4899] rounded-xl">
-                        {/* Corner markers */}
-                        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#EC4899] rounded-tl-xl"></div>
-                        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#EC4899] rounded-tr-xl"></div>
-                        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#EC4899] rounded-bl-xl"></div>
-                        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#EC4899] rounded-br-xl"></div>
-                        {/* Center scan line animation */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-[#EC4899] to-transparent animate-pulse"></div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
+              <div className="relative rounded-2xl bg-[#100C16] border border-[#33263F] overflow-hidden min-h-[220px] flex flex-col items-center justify-center p-4">
+                <div id="barcode-scanner-viewport" className="w-full max-w-sm rounded-xl overflow-hidden" />
 
                 {!isScanning ? (
                   <div className="text-center space-y-3 py-4 w-full">
