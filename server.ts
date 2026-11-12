@@ -55,7 +55,7 @@ app.use((req, res, next) => {
 
 // Initialize Google Gemini SDK on the server side
 const GEMINI_API_KEY =
-  process.env.GEMINI_API_KEY || 'AQ.Ab8RN6L_byCX-0HORZhYWqGXIMWHMJSa9Pz5iO1_cLSP5Z68Iw';
+  process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_KEY || '';
 
 const ai = new GoogleGenAI({
   apiKey: GEMINI_API_KEY,
