@@ -125,10 +125,10 @@ export const RegistrarGramasModal: React.FC<RegistrarGramasModalProps> = ({
             </div>
             <div className="min-w-0">
               <h2 className="text-sm sm:text-lg font-bold text-[#F8F5FC] truncate">
-                Colocar em Gramas ⚖️
+                Adicionar Alimento
               </h2>
               <p className="text-[11px] sm:text-xs text-[#B8AFC4] truncate">
-                Adicione cada alimento com peso e calorias exatas
+                Cada alimento ficará separado na refeição com seu próprio peso e calorias.
               </p>
             </div>
           </div>

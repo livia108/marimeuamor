@@ -172,17 +172,6 @@ export const Header: React.FC<NavigationProps & { onOpenMobileMenu?: () => void 
 
         {/* Zone 3: Actions & Profile */}
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 order-2">
-          {onOpenRegistrarGramas && (
-            <button
-              onClick={onOpenRegistrarGramas}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-[#18121F] hover:bg-[#22192C] text-[#A78BFA] border border-[#8B5CF6]/50 hover:border-[#8B5CF6] text-xs font-semibold shadow-sm transition-all active:scale-[0.98] cursor-pointer"
-              title="Colocar em Gramas"
-            >
-              <Scale className="w-3.5 h-3.5 text-[#A78BFA]" />
-              <span className="hidden sm:inline">Colocar em Gramas</span>
-            </button>
-          )}
-
           <button
             onClick={onOpenQuickScan}
             className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#6D28D9] to-[#8B5CF6] hover:from-[#7C3AED] hover:to-[#A78BFA] text-white text-xs font-semibold shadow-md shadow-[#8B5CF6]/25 transition-all active:scale-[0.98] cursor-pointer"
@@ -249,9 +238,8 @@ export const MobileTabBar: React.FC<
 }) => {
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#100C16]/95 backdrop-blur-lg border-t border-[#33263F] px-1 py-1 pb-safe shadow-2xl">
-      <div className="grid grid-cols-5 items-center justify-around max-w-md mx-auto">
-        {/* Tab 1: Meu Dia */}
-        <button
+      <div className="grid grid-cols-3 items-center justify-around max-w-md mx-auto">
+        
           onClick={() => onSelectTab('meu-dia')}
           className={`flex flex-col items-center justify-center py-1 transition-colors min-h-[46px] cursor-pointer ${
             activeTab === 'meu-dia' ? 'text-[#A78BFA]' : 'text-[#B8AFC4] hover:text-[#F8F5FC]'
@@ -270,7 +258,7 @@ export const MobileTabBar: React.FC<
         >
           <Scale className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="text-[10px] font-medium tracking-tight mt-0.5">Sem Balança</span>
-        </button>
+        </button>*/
 
         {/* Center Floating Action: Fotografar com IA */}
         <div className="flex items-center justify-center -mt-4">
